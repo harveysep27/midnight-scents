@@ -1,1 +1,16 @@
-{"name":"mdnght-scents","version":"1.0.0","type":"module","scripts":{"dev":"vite --host 0.0.0.0","build":"vite build","preview":"vite preview"},"dependencies":{"vite":"^6.3.0","lucide":"^0.468.0"},"devDependencies":{}}
+{
+  "name": "mdnght-scents-pages-root",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite mdnght-site --host 0.0.0.0",
+    "build": "vite build mdnght-site --outDir ../dist",
+    "preview": "vite preview --outDir ../dist"
+  },
+  "dependencies": {
+    "vite": "^6.3.0",
+    "lucide": "^0.468.0"
+  },
+  "devDependencies": {}
+}

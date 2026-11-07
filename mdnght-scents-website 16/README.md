@@ -1,28 +1,19 @@
 # MDNGHT Scents website
 
-A static, mobile-friendly fragrance storefront built with Vite. No Framer subscription required.
+A lightweight, responsive two-page brand website for MDNGHT Scents. The canonical Vite site is in `mdnght-site/`; it contains the homepage, About Us page, shared stylesheet and JavaScript, and the seven original product photographs in `public/images/`.
 
-## Preview locally
+## Ordering
 
-```bash
-npm install
-npm run dev
-```
+`mdnght-site/main.js` preserves the existing Facebook Messenger destination (`61587501380475`). Product prices and sizes remain unlisted until confirmed; the site shows “Price on request” instead of inventing details.
 
-## Required edits before publishing
+## Run locally
 
-1. In `main.js`, set `FACEBOOK_PAGE_USERNAME` to your actual public Facebook Page username (the portion after `facebook.com/` or `m.me/`).
-2. Replace each `price:null` with your actual PHP selling price, e.g. `price:529`. Prices are deliberately **not invented**.
-3. Replace the CSS-generated bottle illustrations with real product photography when ready. They are visual placeholders, not actual product photos.
-4. Test the Messenger order flow. The checkout copies the order summary and opens Messenger; the customer must paste/send it. Messenger deep-link prefilled messages are not guaranteed.
-5. Check all fragrance descriptions and stock/size details before launch.
+From this directory, run `npm install`, then `npm run dev`. The root package serves the canonical `mdnght-site/` app. You can also run the app from `mdnght-site/` using its own package scripts.
 
-## Publish for free using Cloudflare Pages
+## Deploy to Cloudflare Pages
 
-1. Create a GitHub repository and upload these files (unzip first).
-2. Cloudflare Dashboard > Workers & Pages > Create > Pages > Connect to Git.
-3. Select the repository. Build command: `npm run build`. Output directory: `dist`.
-4. Deploy and test the `pages.dev` URL.
-5. Cloudflare Pages > your project > Custom domains > Add domain. Follow the DNS instructions shown for your Namecheap domain. DNS settings depend on whether you use the apex domain or `www`; do not delete email MX records.
+Recommended when this directory is the Pages project root: use `npm run build` and set the output directory to `dist`.
 
-Free tiers and product features can change; verify current Cloudflare account terms before launch.
+If Cloudflare Pages is configured with `mdnght-site/` as its project root, use `npm run build` there and set the output directory to `dist`.
+
+The repository-level duplicate HTML/CSS/JS files are legacy copies and are not the canonical Pages build input. The root package intentionally builds `mdnght-site/` so both build-root layouts serve the same source and product assets.

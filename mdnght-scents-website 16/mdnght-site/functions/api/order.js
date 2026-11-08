@@ -1,6 +1,5 @@
 const GOOGLE_SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbyeN6GhWI7GM5aJ2GUDG4qv6jPWiEg6FQo-NH48VrusGO2QRMPqX3kNARIGmzPhuXnZSw/exec';
-
+  'https://script.google.com/macros/s/AKfycbzPniRwldXXJaJ4qlo4TFIChtGhjjat7W3Gu7AuRhKr_p4beDNqUxdnhYf62q6x3OmMpQ/exec';
 export async function onRequestPost({ request }) {
   try {
     const order = await request.json();

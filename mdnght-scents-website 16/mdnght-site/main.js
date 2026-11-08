@@ -569,11 +569,29 @@ function bindCheckout() {
       throw new Error(result.error || 'Order submission failed.');
     }
 
-    if (status) {
-      status.textContent =
-        `Thank you! Your order request ${result.reference} has been received. ` +
-        'We are reviewing your order and will contact you to confirm the details.';
-    }
+    const successModal = document.querySelector('#order-success-modal');
+const successReference = document.querySelector('#order-success-reference');
+const closeSuccessButton = document.querySelector('#close-order-success');
+
+if (status) {
+  status.textContent = `Order received: ${result.reference}`;
+}
+
+if (successModal && successReference) {
+  successReference.textContent = result.reference;
+  successModal.hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+
+if (closeSuccessButton && successModal) {
+  closeSuccessButton.onclick = () => {
+    successModal.hidden = true;
+    document.body.style.overflow = '';
+    document.querySelector('#products')?.scrollIntoView({
+      behavior: 'smooth'
+    });
+  };
+}
 
     Object.keys(cart).forEach((id) => delete cart[id]);
     saveCart();

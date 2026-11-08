@@ -518,59 +518,77 @@ function bindCheckout() {
     }
   });
 
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
+  form.addEventListener('submit', async (event) => {
+  event.preventDefault();
 
-    const status = document.querySelector('#order-status');
+  const status = document.querySelector('#order-status');
 
-    if (cartEntries().length === 0) {
-      if (status) {
-        status.textContent = 'Add at least one fragrance to your bag before checkout.';
-      }
-      document.querySelector('#cart-section')?.scrollIntoView({ behavior: 'smooth' });
-      return;
+  if (cartEntries().length === 0) {
+    if (status) status.textContent = 'Add at least one fragrance to your bag before checkout.';
+    document.querySelector('#cart-section')?.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  if (!form.reportValidity()) return;
+
+  const formData = new FormData(form);
+
+  const order = {
+    customerName: formData.get('customerName').trim(),
+    customerPhone: formData.get('customerPhone').trim(),
+    orderNotes: formData.get('orderNotes') || '',
+    fulfillment: selectedFulfillment(),
+    deliveryAddress: formData.get('deliveryAddress') || '',
+    deliveryCity: formData.get('deliveryCity') || '',
+    payment: formData.get('payment'),
+    products: cartEntries().map(({ product, quantity }) => ({
+      id: product.id,
+      name: product.name,
+      size: product.size,
+      quantity,
+      price: product.price,
+      lineTotal: product.price * quantity
+    })),
+    subtotal: cartSubtotal(),
+    deliveryFee: deliveryFee(),
+    total: cartSubtotal() + deliveryFee()
+  };
+
+  if (status) status.textContent = 'Submitting your order. Please wait...';
+
+  try {
+    const response = await fetch('/api/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(order)
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || 'Order submission failed.');
     }
 
-    if (!form.reportValidity()) return;
-
-    const formData = new FormData(form);
-    const orderMessage = buildOrderMessage(formData);
-    const encodedMessage = encodeURIComponent(orderMessage);
-
-    // Open synchronously from the submit event to reduce Safari popup blocking.
-    // Messenger may ignore the text query, so the complete message is also shown
-    // in the manual-copy field. Opening Messenger does not submit the order.
-    const messengerTab = window.open(
-      `${messengerUrl()}?text=${encodedMessage}`,
-      '_blank',
-    );
-
-    if (!messengerTab) {
-      showManualCopy(
-        orderMessage,
-        'Safari blocked the Messenger window. The complete order message is shown below; copy it, open Messenger, paste it, and press Send. Your order is not submitted yet.',
-      );
-      return;
+    if (status) {
+      status.textContent =
+        `Thank you! Your order request ${result.reference} has been received. ` +
+        'We are reviewing your order and will contact you to confirm the details.';
     }
 
-    messengerTab.opener = null;
+    Object.keys(cart).forEach((id) => delete cart[id]);
+    saveCart();
+    renderCart();
+    form.reset();
+    updateFulfillmentFields();
+    renderReview();
 
-    showManualCopy(
-      orderMessage,
-      'Messenger opened. Review the conversation and order message. If Messenger did not prefill the message, copy it from below, paste it into Messenger, and press Send. Your order is not submitted until you send it.',
-    );
-
-    if (navigator.clipboard?.writeText) {
-      navigator.clipboard.writeText(orderMessage).then(() => {
-        if (status) {
-          status.textContent =
-            'Messenger opened and the order message was copied. Review the message there, paste it if needed, and press Send. Your order is not submitted until you send it.';
-        }
-      }).catch(() => {
-        // The visible read-only field remains available as the manual-copy fallback.
-      });
+  } catch (error) {
+    if (status) {
+      status.textContent =
+        'We could not submit your order. Your cart is still saved. Please try again.';
     }
-  });
+  }
+});
 
   const copyButton = document.querySelector('#copy-order-message');
   if (copyButton) {

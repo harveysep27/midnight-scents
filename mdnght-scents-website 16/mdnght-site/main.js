@@ -219,12 +219,15 @@ function renderCollection() {
       makeElement('span', '', `${product.size} · ${peso(product.price)}`),
     );
 
-    const messengerLink = makeElement('a', 'button button-small', 'Order Now ↗');
-    messengerLink.href = messengerUrl();
-    messengerLink.target = '_blank';
-    messengerLink.rel = 'noopener noreferrer';
-    messengerLink.dataset.messenger = '';
-    meta.append(messengerLink);
+    const orderNowButton = makeElement('button', 'button button-small', 'Order Now ↓');
+orderNowButton.type = 'button';
+orderNowButton.addEventListener('click', () => {
+  document.querySelector('#checkout-form')?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
+});
+meta.append(orderNowButton);
 
     const addButton = makeElement('button', 'button add-to-cart', 'Add to Cart +');
     addButton.type = 'button';

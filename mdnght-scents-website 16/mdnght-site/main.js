@@ -602,10 +602,13 @@ if (closeSuccessButton && successModal) {
     renderReview();
 
   } catch (error) {
-    if (status) {
-      status.textContent =
-        'We could not submit your order. Your cart is still saved. Please try again.';
-    }
+  console.error('MDNGHT order submission error:', error);
+
+  if (status) {
+    status.textContent =
+      `Order error: ${error.message}. Your cart is still saved.`;
+  }
+}
   }
 });
 

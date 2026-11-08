@@ -536,6 +536,7 @@ function bindCheckout() {
   const order = {
     customerName: formData.get('customerName').trim(),
     customerPhone: formData.get('customerPhone').trim(),
+    customerEmail: formData.get('customerEmail').trim(),
     orderNotes: formData.get('orderNotes') || '',
     fulfillment: selectedFulfillment(),
     deliveryAddress: formData.get('deliveryAddress') || '',

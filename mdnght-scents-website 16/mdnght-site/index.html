@@ -182,6 +182,17 @@
             <button class="button place-order" type="submit">Prepare order in Messenger <span aria-hidden="true">↗</span></button>
             <p class="checkout-disclaimer">Opening Messenger does not submit your order. Review the prepared message and press Send. Your cart remains saved.</p>
             <div class="order-status" id="order-status" role="status" aria-live="polite"></div>
+            <div id="order-success-modal" class="order-success-modal" hidden>
+  <div class="order-success-card" role="dialog" aria-modal="true" aria-labelledby="order-success-title">
+    <div class="order-success-icon">✓</div>
+    <p class="order-success-eyebrow">MDNGHT SCENTS</p>
+    <h2 id="order-success-title">Thank You for Your Order</h2>
+    <p>Your order request has been received.</p>
+    <div class="order-success-reference" id="order-success-reference"></div>
+    <p>We are reviewing your order and will contact you to confirm the details.</p>
+    <button type="button" id="close-order-success" class="button">Continue Shopping</button>
+  </div>
+</div>
             <div class="manual-copy" id="manual-copy" hidden>
               <label for="order-message-copy">Copy this complete order message and paste it into Messenger:</label>
               <textarea id="order-message-copy" rows="12" readonly></textarea>

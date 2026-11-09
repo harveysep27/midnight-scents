@@ -609,7 +609,6 @@ if (closeSuccessButton && successModal) {
       `Order error: ${error.message}. Your cart is still saved.`;
   }
 }
-  }
 });
 
   const copyButton = document.querySelector('#copy-order-message');
